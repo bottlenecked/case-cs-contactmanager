@@ -1,0 +1,38 @@
+<h1>Show Contact</h1>
+
+<ul>
+
+  <li>
+    <strong>Case:</strong>
+    <%= @contact.case_id %>
+  </li>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @contact.title %>
+  </li>
+
+  <li>
+    <strong>First name:</strong>
+    <%= @contact.first_name %>
+  </li>
+
+  <li>
+    <strong>Last name:</strong>
+    <%= @contact.last_name %>
+  </li>
+
+  <li>
+    <strong>Mobile number:</strong>
+    <%= @contact.mobile_number %>
+  </li>
+
+  <li>
+    <strong>Address:</strong>
+    <%= @contact.address %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.contact_path(@conn, :edit, @contact) %></span>
+<span><%= link "Back", to: Routes.contact_path(@conn, :index) %></span>

@@ -17,6 +17,7 @@ defmodule CaseCsContactManagerWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    resources "/contacts", ContactController
   end
 
   # Other scopes may use custom stacks.
