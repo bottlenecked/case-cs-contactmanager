@@ -84,5 +84,19 @@ defmodule CaseCsContactManager.ContactsTest do
       contact = contact_fixture()
       assert %Ecto.Changeset{} = Contacts.change_contact(contact)
     end
+
+    test "unique by case_id" do
+      ["case 1", "case 2", "case 1", "case 3"]
+      |> Enum.map(fn case_id -> %{case_id: case_id} end)
+      |> Enum.map(fn attrs -> contact_fixture(attrs) end)
+
+      contacts = Contacts.unique_by_case()
+
+      assert [
+               %Contact{case_id: "case 1", first_name: nil},
+               %Contact{case_id: "case 2"},
+               %Contact{case_id: "case 3"}
+             ] = contacts
+    end
   end
 end

@@ -22,6 +22,14 @@ defmodule CaseCsContactManager.Contacts do
   end
 
   @doc """
+  Returns a list of %Contact{} with distinct values for case_id
+  """
+  def unique_by_case do
+    from(Contact, distinct: true, select: [:case_id], order_by: :case_id)
+    |> Repo.all()
+  end
+
+  @doc """
   Gets a single contact.
 
   Raises `Ecto.NoResultsError` if the Contact does not exist.
