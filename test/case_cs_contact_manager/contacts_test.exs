@@ -6,9 +6,23 @@ defmodule CaseCsContactManager.ContactsTest do
   describe "contacts" do
     alias CaseCsContactManager.Contacts.Contact
 
-    @valid_attrs %{address: "some address", case_id: "some case_id", first_name: "some first_name", last_name: "some last_name", mobile_number: "some mobile_number", title: "some title"}
-    @update_attrs %{address: "some updated address", case_id: "some updated case_id", first_name: "some updated first_name", last_name: "some updated last_name", mobile_number: "some updated mobile_number", title: "some updated title"}
-    @invalid_attrs %{address: nil, case_id: nil, first_name: nil, last_name: nil, mobile_number: nil, title: nil}
+    @valid_attrs %{
+      address: "some address",
+      case_id: "some case_id",
+      first_name: "some first_name",
+      last_name: "some last_name",
+      mobile_number: "some mobile_number",
+      title: "some title"
+    }
+    @update_attrs %{
+      address: "some updated address",
+      case_id: "some updated case_id",
+      first_name: "some updated first_name",
+      last_name: "some updated last_name",
+      mobile_number: "some updated mobile_number",
+      title: "some updated title"
+    }
+    @invalid_attrs %{case_id: nil}
 
     def contact_fixture(attrs \\ %{}) do
       {:ok, contact} =

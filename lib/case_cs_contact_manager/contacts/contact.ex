@@ -17,6 +17,6 @@ defmodule CaseCsContactManager.Contacts.Contact do
   def changeset(contact, attrs) do
     contact
     |> cast(attrs, [:case_id, :title, :first_name, :last_name, :mobile_number, :address])
-    |> validate_required([:case_id, :title, :first_name, :last_name, :mobile_number, :address])
+    |> validate_required([:case_id])
   end
 end
