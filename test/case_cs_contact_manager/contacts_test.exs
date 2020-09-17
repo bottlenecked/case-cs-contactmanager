@@ -98,5 +98,21 @@ defmodule CaseCsContactManager.ContactsTest do
                %Contact{case_id: "case 3"}
              ] = contacts
     end
+
+    test "list contacts by case" do
+      ["case 1", "case 2", "case 1", "case 3"]
+      |> Enum.map(fn case_id -> %{case_id: case_id} end)
+      |> Enum.map(fn attrs -> contact_fixture(attrs) end)
+
+      contacts = Contacts.list_contacts_by_case("case 0")
+      assert contacts == []
+
+      contacts = Contacts.list_contacts_by_case("case 1")
+      assert length(contacts) == 2
+
+      for c <- contacts do
+        assert c.case_id == "case 1"
+      end
+    end
   end
 end

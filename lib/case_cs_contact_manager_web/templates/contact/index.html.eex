@@ -1,4 +1,4 @@
-<h1>Listing Contacts</h1>
+<h1>Listing Contacts for case "<%= @case_id %>"</h1>
 
 <table>
   <thead>
@@ -33,4 +33,6 @@
   </tbody>
 </table>
 
-<span><%= link "New Contact", to: Routes.contact_path(@conn, :new) %></span>
+<span><%= link "New Contact", to: Routes.contact_path(@conn, :new, case_id: @case_id) %></span>
+|
+<span><%= link "Back", to: Routes.page_path(@conn, :index) %>

@@ -35,4 +35,4 @@
 </ul>
 
 <span><%= link "Edit", to: Routes.contact_path(@conn, :edit, @contact) %></span>
-<span><%= link "Back", to: Routes.contact_path(@conn, :index) %></span>
+<span><%= link "Back", to: Routes.contact_path(@conn, :index, case_id: @contact.case_id) %></span>

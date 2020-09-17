@@ -1,5 +1,12 @@
 <h1>Edit Contact</h1>
 
-<%= render "form.html", Map.put(assigns, :action, Routes.contact_path(@conn, :update, @contact)) %>
+<%
+    assigns =
+        assigns
+        |> Map.put(:action, Routes.contact_path(@conn, :update, @contact))
+        |> Map.put(:case_id, @contact.case_id)
+%>
 
-<span><%= link "Back", to: Routes.contact_path(@conn, :index) %></span>
+<%= render "form.html", assigns %>
+
+<span><%= link "Back to list", to: Routes.contact_path(@conn, :index, case_id: @contact.case_id) %></span>

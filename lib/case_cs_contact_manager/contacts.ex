@@ -21,9 +21,16 @@ defmodule CaseCsContactManager.Contacts do
     Repo.all(Contact)
   end
 
+  @spec list_contacts_by_case(String.t()) :: [Contact.t()]
+  def list_contacts_by_case(case_id) do
+    from(Contact, where: [case_id: ^case_id], order_by: [desc: :updated_at])
+    |> Repo.all()
+  end
+
   @doc """
   Returns a list of %Contact{} with distinct values for case_id
   """
+  @spec unique_by_case() :: [Contact.t()]
   def unique_by_case do
     from(Contact, distinct: true, select: [:case_id], order_by: :case_id)
     |> Repo.all()

@@ -6,7 +6,7 @@
   <% end %>
 
   <%= label f, :case_id %>
-  <%= text_input f, :case_id %>
+  <%= text_input f, :case_id, readonly: !is_nil(@case_id) %>
   <%= error_tag f, :case_id %>
 
   <%= label f, :title %>

@@ -4,14 +4,15 @@ defmodule CaseCsContactManagerWeb.ContactController do
   alias CaseCsContactManager.Contacts
   alias CaseCsContactManager.Contacts.Contact
 
-  def index(conn, _params) do
-    contacts = Contacts.list_contacts()
-    render(conn, "index.html", contacts: contacts)
+  def index(conn, %{"case_id" => case_id}) do
+    contacts = Contacts.list_contacts_by_case(case_id)
+    render(conn, "index.html", contacts: contacts, case_id: case_id)
   end
 
-  def new(conn, _params) do
-    changeset = Contacts.change_contact(%Contact{})
-    render(conn, "new.html", changeset: changeset)
+  def new(conn, params) do
+    case_id = params["case_id"]
+    changeset = Contacts.change_contact(%Contact{}, %{case_id: case_id})
+    render(conn, "new.html", changeset: changeset, case_id: case_id)
   end
 
   def create(conn, %{"contact" => contact_params}) do
@@ -22,7 +23,7 @@ defmodule CaseCsContactManagerWeb.ContactController do
         |> redirect(to: Routes.contact_path(conn, :show, contact))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset, case_id: contact_params["case_id"])
     end
   end
 
@@ -57,6 +58,6 @@ defmodule CaseCsContactManagerWeb.ContactController do
 
     conn
     |> put_flash(:info, "Contact deleted successfully.")
-    |> redirect(to: Routes.contact_path(conn, :index))
+    |> redirect(to: Routes.contact_path(conn, :index, case_id: contact.case_id))
   end
 end
