@@ -4,6 +4,10 @@ defmodule CaseCsContactManagerWeb.ContactController do
   alias CaseCsContactManager.Contacts
   alias CaseCsContactManager.Contacts.Contact
 
+  def current_user_id(_conn) do
+    "anonymous"
+  end
+
   def index(conn, %{"case_id" => case_id}) do
     contacts = Contacts.list_contacts_by_case(case_id)
     render(conn, "index.html", contacts: contacts, case_id: case_id)
@@ -18,6 +22,13 @@ defmodule CaseCsContactManagerWeb.ContactController do
   def create(conn, %{"contact" => contact_params}) do
     case Contacts.create_contact(contact_params) do
       {:ok, contact} ->
+        Contacts.publish_change(
+          contact,
+          Contacts.change_contact(%Contact{}, contact_params),
+          current_user_id(conn),
+          :create
+        )
+
         conn
         |> put_flash(:info, "Contact created successfully.")
         |> redirect(to: Routes.contact_path(conn, :show, contact))
@@ -29,6 +40,14 @@ defmodule CaseCsContactManagerWeb.ContactController do
 
   def show(conn, %{"id" => id}) do
     contact = Contacts.get_contact!(id)
+
+    Contacts.publish_change(
+      contact,
+      Contacts.change_contact(contact),
+      current_user_id(conn),
+      :read
+    )
+
     render(conn, "show.html", contact: contact)
   end
 
@@ -39,22 +58,36 @@ defmodule CaseCsContactManagerWeb.ContactController do
   end
 
   def update(conn, %{"id" => id, "contact" => contact_params}) do
-    contact = Contacts.get_contact!(id)
+    original_contact = Contacts.get_contact!(id)
 
-    case Contacts.update_contact(contact, contact_params) do
+    case Contacts.update_contact(original_contact, contact_params) do
       {:ok, contact} ->
+        Contacts.publish_change(
+          contact,
+          Contacts.change_contact(original_contact, contact_params),
+          current_user_id(conn),
+          :update
+        )
+
         conn
         |> put_flash(:info, "Contact updated successfully.")
         |> redirect(to: Routes.contact_path(conn, :show, contact))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "edit.html", contact: contact, changeset: changeset)
+        render(conn, "edit.html", contact: original_contact, changeset: changeset)
     end
   end
 
   def delete(conn, %{"id" => id}) do
     contact = Contacts.get_contact!(id)
     {:ok, _contact} = Contacts.delete_contact(contact)
+
+    Contacts.publish_change(
+      contact,
+      Contacts.change_contact(contact),
+      current_user_id(conn),
+      :delete
+    )
 
     conn
     |> put_flash(:info, "Contact deleted successfully.")

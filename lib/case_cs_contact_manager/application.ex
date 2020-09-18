@@ -14,9 +14,11 @@ defmodule CaseCsContactManager.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: CaseCsContactManager.PubSub},
       # Start the Endpoint (http/https)
-      CaseCsContactManagerWeb.Endpoint
+      CaseCsContactManagerWeb.Endpoint,
       # Start a worker by calling: CaseCsContactManager.Worker.start_link(arg)
       # {CaseCsContactManager.Worker, arg}
+      {Registry,
+       keys: :duplicate, name: :contacts_pub_sub, partitions: System.schedulers_online()}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

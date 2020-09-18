@@ -103,6 +103,39 @@ defmodule CaseCsContactManagerWeb.ContactControllerTest do
     end
   end
 
+  describe "change events" do
+    alias CaseCsContactManager.Contacts.ContactChange
+
+    setup do
+      CaseCsContactManager.PubSub.subscribe_on_contact_changed()
+    end
+
+    test "read", %{conn: conn} do
+      %{id: id} = contact = fixture(:contact)
+      get(conn, Routes.contact_path(conn, :show, contact))
+      assert_received {:contact_changed, %ContactChange{contact_id: ^id, type: :read}}
+    end
+
+    test "create", %{conn: conn} do
+      conn = post(conn, Routes.contact_path(conn, :create), contact: @create_attrs)
+      %{id: id} = redirected_params(conn)
+      id = String.to_integer(id)
+      assert_received {:contact_changed, %ContactChange{contact_id: ^id, type: :create}}
+    end
+
+    test "update", %{conn: conn} do
+      %{id: id} = contact = fixture(:contact)
+      put(conn, Routes.contact_path(conn, :update, contact), contact: @update_attrs)
+      assert_received {:contact_changed, %ContactChange{contact_id: ^id, type: :update}}
+    end
+
+    test "delete", %{conn: conn} do
+      %{id: id} = contact = fixture(:contact)
+      delete(conn, Routes.contact_path(conn, :delete, contact))
+      assert_received {:contact_changed, %ContactChange{contact_id: ^id, type: :delete}}
+    end
+  end
+
   defp create_contact(_) do
     contact = fixture(:contact)
     %{contact: contact}
