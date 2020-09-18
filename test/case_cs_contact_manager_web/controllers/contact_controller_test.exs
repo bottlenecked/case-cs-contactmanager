@@ -3,9 +3,30 @@ defmodule CaseCsContactManagerWeb.ContactControllerTest do
 
   alias CaseCsContactManager.Contacts
 
-  @create_attrs %{address: "some address", case_id: "some case_id", first_name: "some first_name", last_name: "some last_name", mobile_number: "some mobile_number", title: "some title"}
-  @update_attrs %{address: "some updated address", case_id: "some updated case_id", first_name: "some updated first_name", last_name: "some updated last_name", mobile_number: "some updated mobile_number", title: "some updated title"}
-  @invalid_attrs %{address: nil, case_id: nil, first_name: nil, last_name: nil, mobile_number: nil, title: nil}
+  @create_attrs %{
+    address: "some address",
+    case_id: "some case_id",
+    first_name: "some first_name",
+    last_name: "some last_name",
+    mobile_number: "some mobile_number",
+    title: "some title"
+  }
+  @update_attrs %{
+    address: "some updated address",
+    case_id: "some updated case_id",
+    first_name: "some updated first_name",
+    last_name: "some updated last_name",
+    mobile_number: "some updated mobile_number",
+    title: "some updated title"
+  }
+  @invalid_attrs %{
+    address: nil,
+    case_id: nil,
+    first_name: nil,
+    last_name: nil,
+    mobile_number: nil,
+    title: nil
+  }
 
   def fixture(:contact) do
     {:ok, contact} = Contacts.create_contact(@create_attrs)
@@ -14,7 +35,7 @@ defmodule CaseCsContactManagerWeb.ContactControllerTest do
 
   describe "index" do
     test "lists all contacts", %{conn: conn} do
-      conn = get(conn, Routes.contact_path(conn, :index))
+      conn = get(conn, Routes.contact_path(conn, :index, case_id: "some case_id"))
       assert html_response(conn, 200) =~ "Listing Contacts"
     end
   end
@@ -74,7 +95,8 @@ defmodule CaseCsContactManagerWeb.ContactControllerTest do
 
     test "deletes chosen contact", %{conn: conn, contact: contact} do
       conn = delete(conn, Routes.contact_path(conn, :delete, contact))
-      assert redirected_to(conn) == Routes.contact_path(conn, :index)
+      assert redirected_to(conn) == Routes.contact_path(conn, :index, case_id: contact.case_id)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.contact_path(conn, :show, contact))
       end

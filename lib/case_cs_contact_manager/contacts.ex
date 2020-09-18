@@ -4,9 +4,9 @@ defmodule CaseCsContactManager.Contacts do
   """
 
   import Ecto.Query, warn: false
-  alias CaseCsContactManager.Repo
+  alias CaseCsContactManager.{Repo, PubSub}
 
-  alias CaseCsContactManager.Contacts.Contact
+  alias CaseCsContactManager.Contacts.{Contact, ContactChange}
 
   @doc """
   Returns the list of contacts.
@@ -115,5 +115,22 @@ defmodule CaseCsContactManager.Contacts do
   """
   def change_contact(%Contact{} = contact, attrs \\ %{}) do
     Contact.changeset(contact, attrs)
+  end
+
+  @spec publish_change(Contact.t(), Ecto.Changeset.t(), String.t(), ContactChange.change_type()) ::
+          :ok
+  def publish_change(%Contact{} = contact, changeset, user_id, type) do
+    now = DateTime.utc_now()
+    changed_fields = Map.keys(changeset.changes)
+
+    %ContactChange{
+      contact_id: contact.id,
+      case_id: contact.case_id,
+      fields: changed_fields,
+      date: now,
+      type: type,
+      user_id: user_id
+    }
+    |> PubSub.publish_contact_changed()
   end
 end
