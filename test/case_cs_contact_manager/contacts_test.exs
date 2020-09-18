@@ -109,10 +109,6 @@ defmodule CaseCsContactManager.ContactsTest do
 
       contacts = Contacts.list_contacts_by_case("case 1")
       assert length(contacts) == 2
-
-      for c <- contacts do
-        assert c.case_id == "case 1"
-      end
     end
   end
 end

@@ -23,7 +23,11 @@ defmodule CaseCsContactManager.Contacts do
 
   @spec list_contacts_by_case(String.t()) :: [Contact.t()]
   def list_contacts_by_case(case_id) do
-    from(Contact, where: [case_id: ^case_id], order_by: [desc: :updated_at])
+    from(Contact,
+      where: [case_id: ^case_id],
+      select: [:id, :updated_at],
+      order_by: [desc: :updated_at]
+    )
     |> Repo.all()
   end
 

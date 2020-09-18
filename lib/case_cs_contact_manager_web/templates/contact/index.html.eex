@@ -3,12 +3,8 @@
 <table>
   <thead>
     <tr>
-      <th>Case</th>
-      <th>Title</th>
-      <th>First name</th>
-      <th>Last name</th>
-      <th>Mobile number</th>
-      <th>Address</th>
+      <th>Id</th>
+      <th>Updated at</th>
 
       <th></th>
     </tr>
@@ -16,12 +12,8 @@
   <tbody>
 <%= for contact <- @contacts do %>
     <tr>
-      <td><%= contact.case_id %></td>
-      <td><%= contact.title %></td>
-      <td><%= contact.first_name %></td>
-      <td><%= contact.last_name %></td>
-      <td><%= contact.mobile_number %></td>
-      <td><%= contact.address %></td>
+      <td><%= contact.id %></td>
+      <td><%= contact.updated_at %></td>
 
       <td>
         <span><%= link "Show", to: Routes.contact_path(@conn, :show, contact) %></span>
