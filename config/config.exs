@@ -26,6 +26,12 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :case_cs_contact_manager, CaseCsContactManager.JwtAuth,
+  issuer: "parc-cli",
+  allowed_algos: ["RS256"],
+  verify_issuer: true,
+  secret_fetcher: CaseCsContactManager.JwtAuth
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
