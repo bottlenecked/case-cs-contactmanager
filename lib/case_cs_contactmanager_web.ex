@@ -24,6 +24,7 @@ defmodule CaseCsContactManagerWeb do
       import Plug.Conn
       import CaseCsContactManagerWeb.Gettext
       alias CaseCsContactManagerWeb.Router.Helpers, as: Routes
+      alias CaseCsContactManagerWeb.Plugs.AuthPlug
     end
   end
 

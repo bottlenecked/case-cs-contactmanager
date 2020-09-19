@@ -18,6 +18,9 @@ defmodule CaseCsContactManagerWeb.Router do
 
     get "/", PageController, :index
     resources "/contacts", ContactController
+    get "/login", UserController, :new
+    post "/login", UserController, :create
+    delete "/logout", UserController, :delete
   end
 
   # Other scopes may use custom stacks.

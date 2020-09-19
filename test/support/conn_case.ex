@@ -38,6 +38,18 @@ defmodule CaseCsContactManagerWeb.ConnCase do
       Ecto.Adapters.SQL.Sandbox.mode(CaseCsContactManager.Repo, {:shared, self()})
     end
 
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    conn =
+      if tags[:authenticated_connection] do
+        Phoenix.ConnTest.build_conn()
+        |> authenticate()
+      else
+        Phoenix.ConnTest.build_conn()
+      end
+
+    {:ok, conn: conn}
+  end
+
+  def authenticate(conn) do
+    Plug.Test.init_test_session(conn, current_user_id: "user123")
   end
 end

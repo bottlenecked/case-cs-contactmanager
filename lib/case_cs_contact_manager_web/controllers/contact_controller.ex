@@ -1,11 +1,13 @@
 defmodule CaseCsContactManagerWeb.ContactController do
   use CaseCsContactManagerWeb, :controller
 
-  alias CaseCsContactManager.Contacts
+  alias CaseCsContactManager.{Accounts, Contacts}
   alias CaseCsContactManager.Contacts.Contact
 
-  def current_user_id(_conn) do
-    "anonymous"
+  plug AuthPlug
+
+  def current_user_id(conn) do
+    Accounts.current_user_id(conn)
   end
 
   def index(conn, %{"case_id" => case_id}) do

@@ -1,6 +1,8 @@
 defmodule CaseCsContactManagerWeb.ContactControllerTest do
   use CaseCsContactManagerWeb.ConnCase
 
+  @moduletag authenticated_connection: true
+
   alias CaseCsContactManager.Contacts
 
   @create_attrs %{
@@ -133,6 +135,49 @@ defmodule CaseCsContactManagerWeb.ContactControllerTest do
       %{id: id} = contact = fixture(:contact)
       delete(conn, Routes.contact_path(conn, :delete, contact))
       assert_received {:contact_changed, %ContactChange{contact_id: ^id, type: :delete}}
+    end
+  end
+
+  describe "unauthenticated access" do
+    @describetag authenticated_connection: false
+
+    def requires_login(conn) do
+      quote do
+        html_response(unquote(conn), 302) =~ "/login"
+      end
+    end
+
+    test "index", %{conn: conn} do
+      conn = get(conn, Routes.contact_path(conn, :index, case_id: "some case_id"))
+      assert requires_login(conn)
+    end
+
+    test "new", %{conn: conn} do
+      conn = get(conn, Routes.contact_path(conn, :new))
+      assert requires_login(conn)
+    end
+
+    test "create", %{conn: conn} do
+      conn = post(conn, Routes.contact_path(conn, :create), contact: @create_attrs)
+      assert requires_login(conn)
+    end
+
+    test "edit", %{conn: conn} do
+      contact = fixture(:contact)
+      conn = get(conn, Routes.contact_path(conn, :edit, contact))
+      assert requires_login(conn)
+    end
+
+    test "update", %{conn: conn} do
+      contact = fixture(:contact)
+      conn = put(conn, Routes.contact_path(conn, :update, contact), contact: @update_attrs)
+      assert requires_login(conn)
+    end
+
+    test "delete", %{conn: conn} do
+      contact = fixture(:contact)
+      conn = delete(conn, Routes.contact_path(conn, :delete, contact))
+      assert requires_login(conn)
     end
   end
 
