@@ -36,8 +36,6 @@ services:
       dockerfile: dev.Dockerfile
     depends_on:
       - postgres
-    environment:
-      MIX_ENV: dev
     env_file:
       - .dev.env
     ports:
