@@ -18,6 +18,7 @@ defmodule CaseCsContactManagerWeb.UserController do
         |> redirect(to: Routes.page_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
+        {:error, changeset} = Ecto.Changeset.apply_action(changeset, :insert)
         render(conn, "new.html", changeset: changeset)
     end
   end

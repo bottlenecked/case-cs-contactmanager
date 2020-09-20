@@ -4,7 +4,8 @@ defmodule CaseCsContactManagerWeb.UserControllerTest do
   alias TestHelper.Jwt
 
   @create_attrs %{token: Jwt.correct_token()}
-  @invalid_attrs %{token: Jwt.wrong_token()}
+  @wrong_attrs %{token: Jwt.wrong_token()}
+  @invalid_attrs %{token: "bad value"}
   @missing_attrs %{token: nil}
 
   describe "new user" do
@@ -24,6 +25,11 @@ defmodule CaseCsContactManagerWeb.UserControllerTest do
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, Routes.user_path(conn, :create), user: @invalid_attrs)
+      assert html_response(conn, 200) =~ "Sign in"
+    end
+
+    test "renders errors when token is wrong", %{conn: conn} do
+      conn = post(conn, Routes.user_path(conn, :create), user: @wrong_attrs)
       assert html_response(conn, 200) =~ "Sign in"
     end
 

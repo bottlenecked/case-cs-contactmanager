@@ -21,11 +21,14 @@ defmodule CaseCsContactManager.Accounts do
         changeset =
           %User{}
           |> User.changeset(%{})
-          |> Map.put(:errors, token: {to_string(reason), []})
+          |> Map.put(:errors, token: {error_to_string(reason), []})
 
         {:error, changeset}
     end
   end
+
+  defp error_to_string(%ArgumentError{}), do: "invalid token data"
+  defp error_to_string(reason), do: to_string(reason)
 
   @spec current_user_id(Plug.Conn.t()) :: String.t() | nil
   def current_user_id(conn) do

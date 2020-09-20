@@ -20,5 +20,10 @@ defmodule CaseCsContactManager.AccountsTest do
       result = Accounts.validate_token(%{})
       assert {:error, %{errors: [token: {"can't be blank", _}]}} = result
     end
+
+    test "logging in with random data fails" do
+      result = Accounts.validate_token(%{token: "random"})
+      assert {:error, %{errors: [token: {"invalid token data", _}]}} = result
+    end
   end
 end
