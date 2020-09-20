@@ -1,5 +1,5 @@
 <section>
-  <h1>List of cases with active contacts</h1>
+  <h2>List of cases with active contacts</h2>
   <i>for ease of testing purposes only</i>
   <br/>
   <%=link "+Add contact for new case", to: Routes.contact_path(@conn, :new)%>

@@ -1,4 +1,4 @@
-<h1>Listing Contacts for case "<%= @case_id %>"</h1>
+<h2>Listing Contacts for case "<%= @case_id %>"</h2>
 
 <table>
   <thead>

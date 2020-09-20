@@ -1,4 +1,4 @@
-<h1>Edit Contact</h1>
+<h2>Edit Contact</h2>
 
 <%
     assigns =

@@ -6,11 +6,11 @@
   <% end %>
 
   <%= label f, :token %>
-  <%= text_input f, :token %>
+  <%= textarea f, :token %>
   <%= error_tag f, :token %><br/>
-  <i>Enter the sample JWT token (I know, this is not your typical login form ¯\_(ツ)_/¯)</i>
+  <i>Enter the sample JWT token - I know, this is not your typical login form ¯\_(ツ)_/¯</i>
 
   <div>
-    <%= submit "Save" %>
+    <%= submit "Login" %>
   </div>
 <% end %>
